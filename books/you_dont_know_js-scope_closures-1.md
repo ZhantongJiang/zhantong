@@ -8,12 +8,3 @@ eg. var a = 2;
 将一段话拆分为一个个片段，这个片断也成为token，即记号。（['var', ' ', 'a', ' ', '=', ' ', '2', ';']）
 #### 2.解析
 将带有token数组 转化成 嵌套元素树（AST抽象语法树）
-```flow
-st=>变量声明: 开始
-op=>operation: My Operation
-cond=>condition: Yes or No?
-e=>end
-st->op->cond
-cond(yes)->e
-cond(no)->op
-&```

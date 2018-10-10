@@ -1,18 +1,56 @@
 ## 一.作用域与闭包
 # 词法作用域？
+词法作用域是在编写代码的时候就确定的。
+  
 
-### 大多数编译器的过程
-`eg. var a = 2;`
-#### 1.分词 && 词法分析
-将一段话拆分为一个个片段，这个片断也成为token，即记号。（['var', ' ', 'a', ' ', '=', ' ', '2', ';']）
-#### 2.解析
-将带有token数组 *转化* 嵌套元素树（AST抽象语法树）
-![示例的AST抽象语法树](./images/you_dont_know_js-scope_closures-1-01.png)
-#### 3.代码生成
-将AST抽象语法树 *转化* 可执行的代码。  
-JavaScript代码段在它执行之前（通常是 *刚好* 在它执行之前！）都必须被编译。所以JS编译器将把程序 *var a = 2;* 拿过来，并首先编译它，然后准备运行它，通常是立即的。
+### 欺骗词法作用域的两种方式
+#### 1.eval()
+eval()相当于修改了调用eval的那个作用域。  
+```
+function fun (str) {
+  eval(str)
+  console.log(a)
+}
 
-### LHS && RHS
-LHS（Left-hand Side）相当于**setter**赋值操作；RHS（Right-hand Side）相当于**getter**取值，即读取当前的变量。  
-当进行RHS查询到最顶部的作用域时仍然查询不到该变量，会报**ReferenceError**的异常；当进行LHS查询到最顶部的作用域时仍然查询不到该变量，在非严格模式下会自动生成一个全局变量，但在严格模式下也会报**ReferenceError**的异常。当一个RHS查询的变量被找到了，但是你试着去做一些这个值不可能做到的事，比如将一个非函数的值作为函数运行，或者引用 *null* 或者 *undefined* 值的属性，那么引擎就会抛出一个不同种类的错误，称为**TypeError**。
+fun('var a = 2')    // 2
+console.log(a)    // Uncaught ReferenceError: a is not defined
+```
+但在严格模式下，在eval()内部声明的变量不会实际上修改它的作用域。  
+```
+function fun (str) {
+  "use strict"
+  eval(str)
+  console.log(a)
+}
 
+fun('var a = 2')    // ReferenceError: a is not defined
+```
+#### 2.with()
+with()相当于开辟了一个新的作用域，是LHS的引用。  
+```
+function foo (obj) {
+	with (obj) {
+		a = 2
+	}
+}
+
+var o1 = {
+	a: 3
+}
+
+var o2 = {
+	b: 3
+}
+
+foo(o1)
+console.log(o1.a)   // 2
+
+foo(o2)
+console.log( o2.a )   // undefined
+console.log( a )    // 2，全局作用域
+```  
+传入o1时，对o1对象进行查找，发现a属性后将值2赋予给o1.a；传入o2时，对o2对象进行查找，由于o2没有a这个属性，在非严格模式下LHS会在当前函数调用的作用域上新建一个变量a。
+  
+### 性能
+JavaScript引擎在编译代码的阶段会进行类似于变量提升等的优化，但在编译过程中遇到了eval()或with()这样的字段，编译器不确定其中的内容会是什么，就不得不假定自己知道的所有的标识符的位置可能是无效的，因此所有的优化都将失去意义。  
+with()已被抛弃，eval()也应避免使用。

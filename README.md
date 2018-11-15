@@ -6,3 +6,4 @@
 1. [你不懂的JS-作用域与闭包-什么是作用域](./books/you_dont_know_js-scope_closures-1.md)
 2. [你不懂的JS-作用域与闭包-词法作用域](./books/you_dont_know_js-scope_closures-2.md)
 3. [你不懂的JS-作用域与闭包-函数与块儿作用域](./books/you_dont_know_js-scope_closures-3.md)
+4. [你不懂的JS-作用域与闭包-函数与块儿作用域](./books/you_dont_know_js-scope_closures-4.md)

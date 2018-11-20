@@ -9,3 +9,4 @@
 4. [你不懂的JS-作用域与闭包-提升](./books/you_dont_know_js-scope_closures-4.md)
 5. [你不懂的JS-作用域与闭包-作用域闭包](./books/you_dont_know_js-scope_closures-5.md)
 6. [你不懂的JS-作用域与闭包-附录](./books/you_dont_know_js-scope_closures-6.md)
+7. [你不懂的JS-this与对象原型-this是什么](./books/you_dont_know_js-this_and_object_prototypes-1.md)
